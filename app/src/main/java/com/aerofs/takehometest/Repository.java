@@ -36,6 +36,8 @@ public class Repository {
         return this.login;
     }
 
+    public String getHtml_url() { return this.html_url; }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String toString() {

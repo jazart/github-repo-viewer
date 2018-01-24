@@ -1,10 +1,13 @@
 package com.aerofs.takehometest;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,11 +121,20 @@ public class MainActivity extends AppCompatActivity implements GitHubConstants {
         toast.show();
     }
 
-    public void setListViewAdapter(List<Repository> repositories) {
+    public void setListViewAdapter(final List<Repository> repositories) {
         ArrayAdapter<Repository> repositoryArrayAdapter = new ArrayAdapter<>(MainActivity.this,
                 android.R.layout.simple_list_item_1, repositories);
-        ListView lv = (ListView) findViewById(R.id.rep_list);
-        lv.setAdapter(repositoryArrayAdapter);
+        final ListView lv = (ListView) findViewById(R.id.rep_list);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                  @Override
+                                  public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                                      Intent intent = new Intent(Intent.ACTION_VIEW);
+                                      Repository item = (Repository) lv.getItemAtPosition(position);
+                                      intent.setData(Uri.parse(item.getHtml_url()));
+                                      startActivity(intent);
+                                  }
+                              });
+                lv.setAdapter(repositoryArrayAdapter);
     }
 
 
